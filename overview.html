@@ -266,6 +266,38 @@
   .note-title { font-family: 'Sora', sans-serif; font-weight: 600; font-size: 15.5px; }
   .note p { margin: 0; font-size: 14.5px; color: var(--text-dim); }
 
+
+  /* ── Reviews ──────────────────────────────────────────────────────── */
+  .review {
+    width: 340px; flex-shrink: 0; padding: 22px 24px; border-radius: 22px;
+    background: var(--surface); border: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .review-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .stars-rating { position: relative; display: inline-block; width: 96px; height: 16px; flex-shrink: 0; }
+  .stars-rating svg { position: absolute; inset: 0; width: 96px; height: 16px; }
+  .stars-rating .fill { position: absolute; inset: 0; overflow: hidden; }
+  .stars-rating .empty { color: rgba(255, 255, 255, 0.16); }
+  .stars-rating .fill svg { color: var(--amber); filter: drop-shadow(0 0 4px rgba(248, 190, 126, 0.45)); }
+  .review-rating { font-size: 13px; color: var(--text-faint); font-weight: 600; }
+  .review p { margin: 0; font-size: 15px; color: var(--text); line-height: 1.55; }
+  .review .kind { font-family: 'Sora', sans-serif; font-weight: 600; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-soft); }
+  .review-who { margin-top: auto; display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--text-dim); }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-family: 'Sora', sans-serif; font-weight: 600; font-size: 13px; color: var(--text); background: linear-gradient(135deg, rgba(130,102,232,0.55), rgba(248,190,126,0.35)); flex-shrink: 0; }
+  .review-who strong { color: var(--text); font-weight: 600; }
+  .sample-pill { font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; background: rgba(229, 72, 77, 0.18); color: #f2777b; border: 1px solid rgba(242, 119, 123, 0.4); }
+  .preview-banner { position: relative; z-index: 1; margin: -8px auto 24px; padding: 0 var(--gutter); max-width: 520px; text-align: center; font-size: 13px; color: #f2777b; }
+
+  /* ── Sleep tips ───────────────────────────────────────────────────── */
+  .tip {
+    width: 320px; flex-shrink: 0; padding: 22px 24px; border-radius: 22px; position: relative; overflow: hidden;
+    background: radial-gradient(120% 120% at 0% 0%, rgba(130, 102, 232, 0.22), transparent 60%), var(--surface);
+    border: 1px solid var(--accent-line);
+  }
+  .tip-num { position: absolute; right: 18px; top: 10px; font-family: 'Sora', sans-serif; font-weight: 700; font-size: 44px; line-height: 1; color: rgba(169, 143, 245, 0.12); }
+  .tip .kind { display: block; font-family: 'Sora', sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--accent-soft); margin-bottom: 10px; }
+  .tip p { margin: 0; font-size: 15px; color: var(--text); line-height: 1.55; }
+
   /* ── Final CTA ────────────────────────────────────────────────────── */
   .cta {
     position: relative; overflow: hidden; text-align: center;
@@ -426,6 +458,38 @@
     </div>
   </section>
 
+  <section class="section" id="tips">
+    <div class="wrap section-head center reveal">
+      <p class="eyebrow">Sleep tips</p>
+      <h2>A little advice for tonight</h2>
+      <p class="lead">Simple habits from the tips inside Peacera.</p>
+    </div>
+    <div class="marquee reveal">
+      <div class="marquee-row" style="--marquee-s: 75s">
+        <article class="tip"><span class="tip-num" aria-hidden="true">01</span><span class="kind">Rhythm</span><p>Keep a consistent sleep schedule – go to bed and wake at the same time, even on weekends.</p></article>
+        <article class="tip"><span class="tip-num" aria-hidden="true">02</span><span class="kind">Light</span><p>Dim your screens an hour before bed. Less blue light makes it easier to drift off.</p></article>
+        <article class="tip"><span class="tip-num" aria-hidden="true">03</span><span class="kind">Inputs</span><p>Avoid caffeine after early afternoon – it lingers in your system for 6+ hours.</p></article>
+        <article class="tip"><span class="tip-num" aria-hidden="true">04</span><span class="kind">Ritual</span><p>Build a 30-minute wind-down: low light, calming audio, no inbox.</p></article>
+        <article class="tip"><span class="tip-num" aria-hidden="true">05</span><span class="kind">Environment</span><p>Cool, dark, quiet. Around 18 °C / 65 °F is ideal for most people.</p></article>
+        <article class="tip"><span class="tip-num" aria-hidden="true">06</span><span class="kind">Breath</span><p>Try a 4-7-8 breath cycle in bed: inhale 4s, hold 7s, exhale 8s. Repeat four times.</p></article>
+        <article class="tip"><span class="tip-num" aria-hidden="true">07</span><span class="kind">Morning</span><p>Get natural daylight within 30 minutes of waking – it anchors your circadian rhythm.</p></article>
+        <article class="tip"><span class="tip-num" aria-hidden="true">08</span><span class="kind">Mind</span><p>If you can’t sleep, don’t watch the clock. Get up briefly, stretch, return when sleepy.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="reviews" hidden>
+    <div class="wrap section-head center reveal">
+      <p class="eyebrow">Reviews</p>
+      <h2>Quieter nights, in their words</h2>
+      <p class="lead">What people say after a few nights with Peacera.</p>
+    </div>
+    <p class="preview-banner" id="preview-banner" hidden>Preview: sample reviews for checking the layout – they never show on the live site.</p>
+    <div class="marquee reveal">
+      <div class="marquee-row reverse" id="reviews-row" style="--marquee-s: 90s"></div>
+    </div>
+  </section>
+
   <section class="wrap">
     <div class="cta reveal">
       <img class="icon" src="favicon-192.png?v=2" alt="" width="96" height="96">
@@ -510,6 +574,51 @@
       entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
     }, { rootMargin: '0px 0px -10% 0px' });
     els.forEach(function (e) { io.observe(e); });
+  })();
+
+  // Reviews. Real App Store / tester reviews go in REVIEWS (with permission);
+  // the section stays hidden while it's empty. SAMPLE_REVIEWS are layout
+  // placeholders only – shown just locally or with ?preview-reviews, badged "Sample".
+  var REVIEWS = [];
+  var SAMPLE_REVIEWS = [
+    { name: 'Emma', country: 'United Kingdom', flag: '🇬🇧', rating: 5, kind: 'Review', text: 'The fireplace scene is the only thing that switches my brain off. Most nights I’m asleep before the 30-minute timer ends.' },
+    { name: 'Lukas', country: 'Germany', flag: '🇩🇪', rating: 5, kind: 'Tip', text: 'Set the fade-out to the longest option – you never notice the moment the sound stops.' },
+    { name: 'Olena', country: 'Ukraine', flag: '🇺🇦', rating: 5, kind: 'Review', text: 'The “Echoes of History” stories are so beautifully paced. They’ve become my bedtime ritual.' },
+    { name: 'Javier', country: 'Spain', flag: '🇪🇸', rating: 4.5, kind: 'Review', text: 'Rain plus a dimmed screen an hour before bed – best sleep I’ve had in months. I’d love even more stories.' },
+    { name: 'Camille', country: 'France', flag: '🇫🇷', rating: 5, kind: 'Review', text: 'The starfield widget is adorable. I actually look forward to lighting another star.' },
+    { name: 'Jake', country: 'United States', flag: '🇺🇸', rating: 4.5, kind: 'Tip', text: 'White noise with the 1.5-hour timer is my focus block at work – a built-in hard stop.' },
+    { name: 'Sophie', country: 'Canada', flag: '🇨🇦', rating: 5, kind: 'Tip', text: 'Light sleeper here: the storm scene masks street noise better than earplugs.' },
+    { name: 'Marta', country: 'Poland', flag: '🇵🇱', rating: 4.5, kind: 'Review', text: 'Pausing from the Dynamic Island without unlocking is a tiny thing that makes a huge difference at 2 am.' }
+  ];
+  (function () {
+    // Also on when opened as a local file, so the layout can be checked offline.
+    var preview = /[?&]preview-reviews\b/.test(location.search) || location.protocol === 'file:';
+    var list = REVIEWS.length ? REVIEWS : (preview ? SAMPLE_REVIEWS : []);
+    if (!list.length) return;
+    var STAR = '<path d="M8 1.2l2 4.3 4.7.5-3.5 3.2 1 4.6L8 11.5l-4.2 2.3 1-4.6L1.3 6l4.7-.5z"/>';
+    function starRow() {
+      var g = '';
+      for (var i = 0; i < 5; i++) g += '<g transform="translate(' + (i * 20) + ',0)">' + STAR + '</g>';
+      return '<svg viewBox="0 0 96 16" fill="currentColor" aria-hidden="true">' + g + '</svg>';
+    }
+    function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+    var isSample = list === SAMPLE_REVIEWS;
+    document.getElementById('reviews-row').innerHTML = list.map(function (r) {
+      // Stars sit on a 20px pitch (16px star + 4px gap) – fill to the right fraction.
+      var full = Math.floor(r.rating), part = r.rating - full;
+      var px = full * 20 + part * 16;
+      return '<article class="review">' +
+        '<div class="review-top"><span class="stars-rating" role="img" aria-label="' + r.rating + ' out of 5 stars">' +
+          '<span class="empty">' + starRow() + '</span><span class="fill" style="width:' + px + 'px">' + starRow() + '</span></span>' +
+          (isSample ? '<span class="sample-pill">Sample</span>' : (r.kind === 'Tip' ? '<span class="kind">Tip</span>' : '')) +
+        '</div>' +
+        '<p>' + esc(r.text) + '</p>' +
+        '<div class="review-who"><span class="avatar" aria-hidden="true">' + esc(r.name.charAt(0)) + '</span>' +
+          '<span><strong>' + esc(r.name) + '</strong> · ' + r.flag + ' ' + esc(r.country) + '</span></div>' +
+      '</article>';
+    }).join('');
+    document.getElementById('reviews').hidden = false;
+    if (isSample) document.getElementById('preview-banner').hidden = false;
   })();
 
   // Marquee: duplicate each row so the -50% loop is seamless.
