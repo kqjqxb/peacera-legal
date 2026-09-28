@@ -20,55 +20,26 @@
   }
 
   :root {
-    --bg: #f5f3fb;
-    --surface: #ffffff;
-    --surface-2: #f0edf9;
-    --border: rgba(20, 16, 40, 0.10);
-    --border-strong: rgba(20, 16, 40, 0.16);
-    --text: #15101f;
-    --text-dim: rgba(21, 16, 31, 0.66);
-    --text-faint: rgba(21, 16, 31, 0.46);
-    --accent: #5d3fc9;
-    --accent-dim: rgba(93, 63, 201, 0.09);
-    --accent-line: rgba(93, 63, 201, 0.28);
-    --glow: rgba(93, 63, 201, 0.16);
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #05070f;
-      --surface: #0b0e22;
-      --surface-2: rgba(255, 255, 255, 0.035);
-      --border: rgba(244, 242, 251, 0.10);
-      --border-strong: rgba(244, 242, 251, 0.16);
-      --text: #f3f1fb;
-      --text-dim: rgba(243, 241, 251, 0.68);
-      --text-faint: rgba(243, 241, 251, 0.44);
-      --accent: #a08cf2;
-      --accent-dim: rgba(143, 119, 239, 0.14);
-      --accent-line: rgba(160, 140, 242, 0.32);
-      --glow: rgba(130, 102, 232, 0.32);
-    }
-  }
-
-  :root[data-theme="dark"] {
-    --bg: #05070f;
-    --surface: #0b0e22;
-    --surface-2: rgba(255, 255, 255, 0.035);
-    --border: rgba(244, 242, 251, 0.10);
-    --border-strong: rgba(244, 242, 251, 0.16);
-    --text: #f3f1fb;
-    --text-dim: rgba(243, 241, 251, 0.68);
-    --text-faint: rgba(243, 241, 251, 0.44);
-    --accent: #a08cf2;
-    --accent-dim: rgba(143, 119, 239, 0.14);
-    --accent-line: rgba(160, 140, 242, 0.32);
-    --glow: rgba(130, 102, 232, 0.32);
+    color-scheme: dark;
+    --bg: #04060f;
+    --surface: rgba(255, 255, 255, 0.06);
+    --surface-strong: rgba(255, 255, 255, 0.10);
+    --border: rgba(255, 255, 255, 0.10);
+    --border-strong: rgba(255, 255, 255, 0.16);
+    --text: #f4f2fb;
+    --text-dim: rgba(244, 242, 251, 0.72);
+    --text-faint: rgba(244, 242, 251, 0.50);
+    --accent: #8266e8;
+    --accent-soft: #a98ff5;
+    --accent-deep: #5a3cc4;
+    --accent-dim: rgba(130, 102, 232, 0.16);
+    --accent-line: rgba(169, 143, 245, 0.38);
+    --star: #a98ff5;
   }
 
   * { box-sizing: border-box; }
 
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; background: var(--bg); }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
   }
@@ -81,29 +52,76 @@
     font-size: 16px;
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 
-  a { color: var(--accent); text-decoration: none; }
+  a { color: var(--accent-soft); text-decoration: none; }
   a:hover { text-decoration: underline; }
   a:focus-visible, button:focus-visible {
-    outline: 2px solid var(--accent);
+    outline: 2px solid var(--accent-soft);
     outline-offset: 3px;
-    border-radius: 4px;
+    border-radius: 6px;
   }
 
-  .glow {
+  /* ── Sky: same layers as the onboarding / quiz screens ───────────── */
+  .sky {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(180deg, #04060f 0%, #070a1b 50%, #101638 100%);
+  }
+  .sky::after {
+    content: "";
     position: absolute;
     inset: 0;
-    height: 420px;
-    background: radial-gradient(60% 100% at 50% 0%, var(--glow), transparent 70%);
-    pointer-events: none;
+    background: linear-gradient(135deg, rgba(130, 102, 232, 0.42) 0%, rgba(130, 102, 232, 0.12) 38%, rgba(0, 0, 0, 0) 72%);
+  }
+  .stars {
+    position: fixed;
+    inset: 0;
     z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--star);
+    opacity: var(--o, 0.5);
+  }
+  .star.glint { box-shadow: 0 0 6px 1px rgba(169, 143, 245, 0.55); }
+  @media (prefers-reduced-motion: no-preference) {
+    .star { animation: twinkle var(--d, 4s) ease-in-out var(--delay, 0s) infinite; }
+    @keyframes twinkle {
+      0%, 100% { opacity: calc(var(--o, 0.5) * 0.3); }
+      50% { opacity: var(--o, 0.5); }
+    }
   }
 
+  /* Quiz-style progress track, fills as you read */
+  .progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    z-index: 5;
+    background: rgba(255, 255, 255, 0.06);
+  }
+  .progress span {
+    display: block;
+    height: 100%;
+    width: 0;
+    border-radius: 0 999px 999px 0;
+    background: var(--accent-soft);
+    box-shadow: 0 0 10px rgba(169, 143, 245, 0.6);
+  }
+
+  header.top, nav.toc, main, footer { position: relative; z-index: 1; }
+
   header.top {
-    position: relative;
-    z-index: 1;
-    padding: clamp(28px, 6vw, 56px) clamp(20px, 6vw, 64px) clamp(32px, 5vw, 44px);
+    padding: clamp(40px, 9vw, 88px) clamp(20px, 6vw, 64px) clamp(32px, 5vw, 48px);
     max-width: 760px;
     margin: 0 auto;
   }
@@ -114,12 +132,16 @@
     gap: 10px;
     font-family: 'Sora', sans-serif;
     font-weight: 700;
-    font-size: 17px;
+    font-size: 16px;
     letter-spacing: -0.01em;
     color: var(--text);
-    margin-bottom: clamp(28px, 5vw, 40px);
+    padding: 8px 16px 8px 12px;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    margin-bottom: clamp(36px, 7vw, 56px);
   }
-  .wordmark svg { width: 22px; height: 22px; flex-shrink: 0; }
+  .wordmark svg { width: 20px; height: 20px; flex-shrink: 0; color: var(--accent-soft); }
   .wordmark .tag {
     font-family: -apple-system, sans-serif;
     font-weight: 500;
@@ -132,57 +154,65 @@
     font-family: 'Sora', sans-serif;
     font-weight: 600;
     font-size: 12px;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.32em;
     text-transform: uppercase;
-    color: var(--accent);
-    margin: 0 0 14px;
+    color: var(--accent-soft);
+    margin: 0 0 18px;
+    max-width: none;
   }
 
   h1 {
     font-family: 'Sora', sans-serif;
-    font-weight: 700;
-    font-size: clamp(34px, 6vw, 46px);
-    line-height: 1.08;
+    font-weight: 600;
+    font-size: clamp(34px, 7vw, 48px);
+    line-height: 1.1;
     letter-spacing: -0.02em;
-    margin: 0 0 16px;
+    margin: 0 0 18px;
+    max-width: 18ch;
     text-wrap: balance;
   }
 
   .dek {
     font-size: 17px;
     color: var(--text-dim);
-    max-width: 56ch;
+    max-width: 52ch;
     margin: 0 0 8px;
   }
 
   .meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px 18px;
-    margin-top: 20px;
+    gap: 8px;
+    margin-top: 28px;
     font-size: 13px;
     color: var(--text-faint);
   }
-  .meta strong { color: var(--text-dim); font-weight: 600; }
+  .meta span {
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+  .meta strong { color: var(--text-dim); font-weight: 600; margin-right: 4px; }
 
   nav.toc {
-    position: relative;
-    z-index: 1;
     max-width: 760px;
-    margin: 0 auto clamp(40px, 6vw, 64px);
+    margin: 0 auto clamp(32px, 6vw, 56px);
     padding: 0 clamp(20px, 6vw, 64px);
   }
   .toc-inner {
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: 24px;
     background: var(--surface);
-    padding: 18px 22px;
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    padding: 20px 22px;
   }
   .toc-title {
     font-family: 'Sora', sans-serif;
     font-weight: 600;
-    font-size: 12px;
-    letter-spacing: 0.1em;
+    font-size: 11.5px;
+    letter-spacing: 0.24em;
     text-transform: uppercase;
     color: var(--text-faint);
     margin: 0 0 12px;
@@ -190,19 +220,38 @@
   .toc-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 6px 24px;
+    gap: 6px 10px;
     list-style: none;
     margin: 0;
     padding: 0;
+    counter-reset: toc;
   }
+  .toc-list li { margin: 0; counter-increment: toc; }
   .toc-list a {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-size: 14.5px;
     color: var(--text-dim);
-    padding: 4px 0;
-    border-bottom: 1px solid transparent;
+    padding: 8px 12px;
+    border-radius: 14px;
+    border: 1.5px solid transparent;
+    transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
   }
-  .toc-list a:hover { color: var(--accent); text-decoration: none; }
+  .toc-list a::before {
+    content: counter(toc, decimal-leading-zero);
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    color: var(--accent-soft);
+    opacity: 0.8;
+  }
+  .toc-list a:hover {
+    color: var(--text);
+    text-decoration: none;
+    background: var(--surface-strong);
+    border-color: var(--accent);
+  }
 
   main {
     max-width: 760px;
@@ -210,8 +259,8 @@
     padding: 0 clamp(20px, 6vw, 64px) clamp(60px, 8vw, 96px);
   }
 
-  section { padding-top: clamp(40px, 6vw, 56px); scroll-margin-top: 24px; }
-  section + section { border-top: 1px solid var(--border); }
+  section { padding-top: clamp(36px, 6vw, 52px); scroll-margin-top: 24px; }
+  section + section { border-top: 1px solid var(--border); margin-top: clamp(4px, 1vw, 8px); }
 
   h2 {
     font-family: 'Sora', sans-serif;
@@ -230,111 +279,162 @@
     color: var(--text);
   }
 
-  p { margin: 0 0 16px; max-width: 66ch; }
+  p { margin: 0 0 16px; max-width: 66ch; color: var(--text-dim); }
+  p strong, li strong { color: var(--text); }
   p.tight { margin-bottom: 8px; }
 
   ul, ol {
     margin: 0 0 16px;
-    padding-left: 22px;
+    padding-left: 0;
     max-width: 64ch;
+    list-style: none;
+    color: var(--text-dim);
   }
+  main ul > li {
+    position: relative;
+    padding-left: 22px;
+  }
+  main ul > li::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 0.72em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    box-shadow: 0 0 6px rgba(169, 143, 245, 0.7);
+  }
+  main ol { list-style: decimal; padding-left: 22px; }
+  main ol > li::marker { color: var(--accent-soft); font-family: 'Sora', sans-serif; font-weight: 600; font-size: 0.9em; }
   li { margin-bottom: 8px; }
   li:last-child { margin-bottom: 0; }
 
   .cards {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 12px;
     margin: 20px 0 24px;
   }
   .card {
-    border: 1px solid var(--border);
-    background: var(--surface-2);
-    border-radius: 14px;
-    padding: 16px 18px;
+    border: 1.5px solid transparent;
+    background: var(--surface);
+    border-radius: 18px;
+    padding: 18px 20px;
+    transition: border-color 200ms ease, background 200ms ease;
   }
+  .card:hover { border-color: var(--accent-line); background: var(--surface-strong); }
   .card-head {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 6px;
+    gap: 12px;
+    margin-bottom: 8px;
   }
   .card-icon {
-    width: 26px;
-    height: 26px;
-    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
     background: var(--accent-dim);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
   }
-  .card-icon svg { width: 14px; height: 14px; color: var(--accent); }
+  .card-icon svg { width: 16px; height: 16px; color: var(--accent-soft); }
   .card-title {
     font-family: 'Sora', sans-serif;
     font-weight: 600;
-    font-size: 14.5px;
+    font-size: 15px;
+    color: var(--text);
   }
   .card p { margin: 0; font-size: 14.5px; color: var(--text-dim); max-width: none; }
 
   .pill {
     display: inline-block;
-    font-size: 11.5px;
+    font-family: -apple-system, sans-serif;
+    font-size: 11px;
     font-weight: 600;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     padding: 2px 9px;
     border-radius: 999px;
     border: 1px solid var(--accent-line);
-    color: var(--accent);
+    color: var(--accent-soft);
     background: var(--accent-dim);
     margin-left: 8px;
     vertical-align: middle;
   }
 
   .callout {
-    border: 1px solid var(--border-strong);
-    border-left: 3px solid var(--accent);
-    background: var(--surface-2);
-    border-radius: 4px 12px 12px 4px;
-    padding: 14px 18px;
+    border: 1.5px solid var(--accent);
+    background: var(--surface-strong);
+    border-radius: 18px;
+    padding: 16px 20px;
     margin: 8px 0 20px;
     font-size: 14.5px;
     color: var(--text-dim);
+    box-shadow: 0 0 32px -12px rgba(130, 102, 232, 0.6);
   }
   .callout strong { color: var(--text); }
 
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: 18px;
+    background: var(--surface);
+    margin: 4px 0 20px;
+  }
   table {
     width: 100%;
     border-collapse: collapse;
-    margin: 4px 0 20px;
     font-size: 14.5px;
   }
   th, td {
     text-align: left;
-    padding: 10px 14px;
+    padding: 12px 16px;
     border-bottom: 1px solid var(--border);
     vertical-align: top;
   }
+  tr:last-child td { border-bottom: 0; }
   th {
     font-family: 'Sora', sans-serif;
     font-weight: 600;
-    font-size: 12.5px;
-    letter-spacing: 0.03em;
+    font-size: 11.5px;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--text-faint);
+    background: rgba(255, 255, 255, 0.03);
   }
   td { color: var(--text-dim); }
-  .table-wrap { overflow-x: auto; }
+  td:first-child { color: var(--text); font-weight: 500; white-space: nowrap; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 14px 26px;
+    border-radius: 999px;
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #fff;
+    background: linear-gradient(180deg, #8266e8, #5a3cc4);
+    box-shadow: 0 10px 30px -10px rgba(130, 102, 232, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  }
+  .btn:hover { text-decoration: none; filter: brightness(1.08); }
 
   footer {
     max-width: 760px;
     margin: 0 auto;
     padding: 32px clamp(20px, 6vw, 64px) 56px;
     border-top: 1px solid var(--border);
+    text-align: center;
   }
   .footer-links {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 6px 18px;
     font-size: 14px;
     margin-bottom: 12px;
@@ -342,74 +442,172 @@
   .footer-note {
     font-size: 13px;
     color: var(--text-faint);
+    margin: 0 auto;
+  }
+
+
+  /* ── Get the app ─────────────────────────────────────────────────── */
+  /* Hidden inside the app's own WebView (see the in-app check in <head>) –
+     a store link there would just load the App Store page in the sheet. */
+  .in-app .get-app { display: none !important; }
+
+  .appstore-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    height: 54px;
+    padding: 0 20px 0 16px;
+    border-radius: 14px;
+    background: #000;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    box-shadow: 0 12px 32px -12px rgba(130, 102, 232, 0.75);
+    transition: transform 200ms cubic-bezier(.16,1,.3,1), box-shadow 200ms ease, border-color 200ms ease;
+  }
+  .appstore-badge:hover {
+    text-decoration: none;
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 16px 40px -12px rgba(130, 102, 232, 0.95);
+  }
+  .appstore-badge:active { transform: scale(0.98); }
+  .appstore-badge .apple { width: 26px; height: 26px; margin-top: -3px; flex-shrink: 0; }
+  .badge-text { display: flex; flex-direction: column; text-align: left; line-height: 1; }
+  .badge-small { font-size: 11px; font-weight: 500; letter-spacing: 0.02em; margin-bottom: 3px; }
+  .badge-big { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+  .appstore-badge.compact { height: 44px; padding: 0 16px 0 12px; border-radius: 11px; gap: 8px; }
+  .appstore-badge.compact .apple { width: 20px; height: 20px; }
+  .appstore-badge.compact .badge-small { font-size: 9.5px; margin-bottom: 2px; }
+  .appstore-badge.compact .badge-big { font-size: 17px; }
+
+  .hero-cta { margin-top: 28px; }
+
+  .app-promo {
+    position: relative;
+    overflow: hidden;
+    margin-top: clamp(48px, 8vw, 72px);
+    padding: clamp(24px, 5vw, 36px);
+    border-radius: 28px;
+    border: 1px solid var(--accent-line);
+    background:
+      radial-gradient(120% 90% at 0% 0%, rgba(130, 102, 232, 0.38), transparent 60%),
+      radial-gradient(80% 80% at 100% 100%, rgba(92, 200, 255, 0.10), transparent 60%),
+      var(--surface);
+    box-shadow: 0 24px 60px -30px rgba(130, 102, 232, 0.8);
+    display: flex;
+    align-items: center;
+    gap: clamp(18px, 4vw, 28px);
+  }
+  .app-promo::before {
+    /* a few fixed stars inside the card */
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(1.5px 1.5px at 78% 18%, rgba(169,143,245,0.9), transparent 60%),
+      radial-gradient(1px 1px at 88% 42%, rgba(169,143,245,0.7), transparent 60%),
+      radial-gradient(2px 2px at 64% 12%, rgba(244,242,251,0.8), transparent 60%),
+      radial-gradient(1px 1px at 94% 76%, rgba(169,143,245,0.6), transparent 60%),
+      radial-gradient(1.5px 1.5px at 52% 88%, rgba(169,143,245,0.5), transparent 60%);
+  }
+  .app-icon {
+    position: relative;
+    width: 84px;
+    height: 84px;
+    border-radius: 20px;
+    flex-shrink: 0;
+    box-shadow: 0 10px 30px -8px rgba(130, 102, 232, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.12);
+  }
+  .app-promo-body { position: relative; flex: 1; min-width: 0; }
+  .app-promo .eyebrow { margin-bottom: 8px; font-size: 11px; letter-spacing: 0.26em; }
+  .app-promo h2 { margin: 0 0 6px; font-size: clamp(20px, 3vw, 24px); }
+  .app-promo p { margin: 0 0 18px; font-size: 15px; max-width: 46ch; }
+
+  @media (max-width: 560px) {
+    .app-promo { flex-direction: column; text-align: center; }
+    .app-promo p { margin-left: auto; margin-right: auto; }
   }
 
   @media (max-width: 560px) {
     .toc-list { grid-template-columns: 1fr; }
+    td:first-child { white-space: normal; }
+    .wordmark .tag { display: none; }
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    header.top, nav.toc, main { animation: rise 560ms cubic-bezier(.16,1,.3,1) both; }
-    nav.toc { animation-delay: 60ms; }
-    main { animation-delay: 100ms; }
-    @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    header.top, nav.toc, main { animation: rise 640ms cubic-bezier(.16,1,.3,1) both; }
+    nav.toc { animation-delay: 80ms; }
+    main { animation-delay: 140ms; }
+    @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
   }
 
   .contact-card {
-    border: 1px solid var(--accent-line);
-    background: var(--accent-dim);
-    border-radius: 16px;
-    padding: 20px 22px;
+    border: 1.5px solid var(--accent-line);
+    background:
+      radial-gradient(120% 120% at 0% 0%, rgba(130, 102, 232, 0.28), transparent 60%),
+      var(--surface);
+    border-radius: 24px;
+    padding: 22px 24px;
     margin: 0 0 8px;
+    box-shadow: 0 20px 50px -30px rgba(130, 102, 232, 0.8);
   }
-  .contact-card .card-title { font-size: 16px; }
-  .contact-card p { margin: 6px 0 0; font-size: 15px; color: var(--text-dim); max-width: none; }
+  .contact-card .card-title { font-size: 17px; }
+  .contact-card p { margin: 8px 0 0; font-size: 15px; color: var(--text-dim); max-width: none; }
   .contact-card a.mail {
-    display: inline-block;
-    margin-top: 12px;
+    display: inline-flex;
+    margin-top: 16px;
+    max-width: 100%;
+    padding: 12px 20px;
+    border-radius: 999px;
     font-family: 'Sora', sans-serif;
     font-weight: 600;
-    font-size: 15px;
-    padding: 9px 16px;
-    border-radius: 999px;
-    background: var(--accent);
-    color: var(--bg);
+    font-size: 14px;
+    white-space: nowrap;
+    color: #fff;
+    background: linear-gradient(180deg, #8266e8, #5a3cc4);
+    box-shadow: 0 10px 30px -10px rgba(130, 102, 232, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.18);
   }
-  .contact-card a.mail:hover { text-decoration: none; opacity: 0.92; }
+  .contact-card a.mail:hover { text-decoration: none; filter: brightness(1.08); }
 
   details.faq {
-    border: 1px solid var(--border);
-    background: var(--surface-2);
-    border-radius: 14px;
-    margin: 0 0 10px;
+    border: 1.5px solid transparent;
+    background: var(--surface);
+    border-radius: 18px;
+    margin: 0 0 12px;
+    transition: border-color 200ms ease, background 200ms ease;
   }
+  details.faq:hover { background: var(--surface-strong); }
+  details.faq[open] { border-color: var(--accent); background: var(--surface-strong); }
   details.faq summary {
     list-style: none;
     cursor: pointer;
-    padding: 14px 44px 14px 18px;
+    padding: 16px 48px 16px 20px;
     font-family: 'Sora', sans-serif;
     font-weight: 600;
     font-size: 15px;
+    color: var(--text);
     position: relative;
   }
   details.faq summary::-webkit-details-marker { display: none; }
   details.faq summary::after {
     content: '';
     position: absolute;
-    right: 18px;
+    right: 20px;
     top: 50%;
     width: 8px;
     height: 8px;
-    border-right: 2px solid var(--text-faint);
-    border-bottom: 2px solid var(--text-faint);
+    border-right: 2px solid var(--accent-soft);
+    border-bottom: 2px solid var(--accent-soft);
     transform: translateY(-70%) rotate(45deg);
     transition: transform 200ms ease;
   }
   details.faq[open] summary::after { transform: translateY(-30%) rotate(-135deg); }
-  details.faq summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 14px; }
-  details.faq .answer { padding: 0 18px 16px; font-size: 15px; color: var(--text-dim); }
+  details.faq summary:focus-visible { outline: 2px solid var(--accent-soft); outline-offset: 2px; border-radius: 18px; }
+  details.faq .answer { padding: 0 20px 18px; font-size: 15px; color: var(--text-dim); }
   details.faq .answer p, details.faq .answer ol, details.faq .answer ul { max-width: none; }
   details.faq .answer p:last-child, details.faq .answer ol:last-child, details.faq .answer ul:last-child { margin-bottom: 0; }
+  details.faq .callout { margin-top: 4px; }
   .path {
     font-family: 'Sora', sans-serif;
     font-weight: 600;
@@ -417,18 +615,33 @@
     color: var(--text);
     white-space: nowrap;
   }
+  @media (max-width: 560px) { .path { white-space: normal; } }
 </style>
+<script>
+  // Inside the app's LegalWebViewModal there's no point advertising the app.
+  // iOS WKWebView's user agent has no "Safari/" token; Android WebView has
+  // "; wv)". "?app=1" is an explicit override the app can pass later.
+  (function () {
+    var ua = navigator.userAgent || '';
+    var inApp = /[?&]app=1/.test(location.search) ||
+      (/iPhone|iPad|iPod/.test(ua) && !/Safari\//.test(ua)) ||
+      /; wv\)/.test(ua);
+    if (inApp) document.documentElement.classList.add('in-app');
+  })();
+</script>
 </head>
 <body>
-<div class="glow" aria-hidden="true"></div>
+<div class="sky" aria-hidden="true"></div>
+<div class="stars" id="stars" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"><span id="progress"></span></div>
 
 <header class="top">
-  <a class="wordmark" href="https://kqjqxb.github.io/peacera-legal/support" aria-label="Peacera: Sleep &amp; Focus">
+  <div class="wordmark">
     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M20.5 14.2c-1.1.4-2.3.6-3.5.6-5.5 0-10-4.5-10-10 0-1.2.2-2.4.6-3.5C4 3 1.5 6.7 1.5 11c0 6.1 4.9 11 11 11 4.3 0 8-2.5 9.8-6.1-.6.2-1.2.3-1.8.3z" fill="currentColor" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
     </svg>
     Peacera: Sleep &amp; Focus <span class="tag">– Support</span>
-  </a>
+  </div>
 
   <p class="eyebrow">Support</p>
   <h1>How can we help?</h1>
@@ -437,6 +650,7 @@
     <span><strong>Contact</strong> <a href="mailto:peacera.sleep.focus@gmail.com">peacera.sleep.focus@gmail.com</a></span>
     <span><strong>Reply time</strong> usually within 1–2 business days</span>
   </div>
+  <div class="hero-cta get-app"><a class="appstore-badge compact" href="https://apps.apple.com/us/app/peacera-sleep-focus/id6791753577" target="_blank" rel="noopener" aria-label="Download Peacera on the App Store"><svg class="apple" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span class="badge-text"><span class="badge-small">Download on the</span><span class="badge-big">App Store</span></span></a></div>
 </header>
 
 <nav class="toc" aria-label="On this page">
@@ -608,13 +822,23 @@
     </details>
 
   </section>
+  <aside class="app-promo get-app" aria-label="Get the app">
+    <img class="app-icon" alt="" src="data:image/jpeg;base64,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">
+    <div class="app-promo-body">
+      <p class="eyebrow">Get the app</p>
+      <h2>Peace of your era</h2>
+      <p>Cinematic soundscapes, sleep stories, Home Screen widgets &amp; Live Activities – crafted to quiet your mind and deepen your sleep.</p>
+      <a class="appstore-badge" href="https://apps.apple.com/us/app/peacera-sleep-focus/id6791753577" target="_blank" rel="noopener" aria-label="Download Peacera on the App Store"><svg class="apple" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span class="badge-text"><span class="badge-small">Download on the</span><span class="badge-big">App Store</span></span></a>
+    </div>
+  </aside>
 </main>
 
 <footer>
   <div class="footer-links">
-    <a href="https://kqjqxb.github.io/peacera-legal/terms">Terms of Use</a>
     <a href="https://kqjqxb.github.io/peacera-legal/privacy">Privacy Policy</a>
-    <a href="mailto:peacera.sleep.focus@gmail.com">Contact support</a>
+    <a href="https://kqjqxb.github.io/peacera-legal/terms">Terms of Service</a>
+    <a href="mailto:peacera.sleep.focus@gmail.com">Email us</a>
+    <a class="get-app" href="https://apps.apple.com/us/app/peacera-sleep-focus/id6791753577" target="_blank" rel="noopener">Peacera on the App Store</a>
   </div>
   <p class="footer-note">Peacera: Sleep &amp; Focus – a sleep and focus companion app.</p>
 </footer>
@@ -652,6 +876,46 @@
       if (history.pushState) history.pushState(null, '', '#' + id);
     });
   });
+
+  // Twinkling star field – mirrors the <Particles style="stars"> layer on
+  // the onboarding and quiz screens (purple300 dots, 1–3px, slow twinkle).
+  (function () {
+    var field = document.getElementById('stars');
+    if (!field) return;
+    var area = window.innerWidth * window.innerHeight;
+    var count = Math.max(40, Math.min(110, Math.round(area / 9000)));
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < count; i++) {
+      var s = document.createElement('span');
+      var size = 1 + Math.random() * 2;
+      s.className = 'star' + (size > 2.4 ? ' glint' : '');
+      s.style.left = (Math.random() * 100) + '%';
+      s.style.top = (Math.random() * 100) + '%';
+      s.style.width = s.style.height = size.toFixed(2) + 'px';
+      s.style.setProperty('--o', (0.3 + Math.random() * 0.5).toFixed(2));
+      s.style.setProperty('--d', (2.4 + Math.random() * 3).toFixed(2) + 's');
+      s.style.setProperty('--delay', (-Math.random() * 5).toFixed(2) + 's');
+      frag.appendChild(s);
+    }
+    field.appendChild(frag);
+  })();
+
+  // Reading progress – same look as the quiz's progress track.
+  (function () {
+    var bar = document.getElementById('progress');
+    if (!bar) return;
+    var ticking = false;
+    function update() {
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = (max > 0 ? Math.min(window.scrollY / max, 1) * 100 : 0) + '%';
+      ticking = false;
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  })();
 </script>
 </body>
 </html>
